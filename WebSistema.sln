@@ -3,15 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.14.37614.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebSistema", "WebSistema.csproj", "{923362AA-A2DA-49FB-96D4-BC3532436DFE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebSistema", "WebSistema\WebSistema.csproj", "{923362AA-A2DA-49FB-96D4-BC3532436DFE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CapaDatos", "..\CapaDatos\CapaDatos.csproj", "{921E6D6B-FD3D-49D8-B758-E0726A51E02A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CapaDatos", "CapaDatos\CapaDatos.csproj", "{921E6D6B-FD3D-49D8-B758-E0726A51E02A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CapaEntidad", "..\CapaEntidad\CapaEntidad.csproj", "{088DF7BE-617A-4AF7-9E9F-A4129F0392F5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CapaEntidad", "CapaEntidad\CapaEntidad.csproj", "{088DF7BE-617A-4AF7-9E9F-A4129F0392F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CapaNegocio", "..\CapaNegocio\CapaNegocio.csproj", "{7AD79F45-2271-45E4-94D6-811EB9AED8EC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CapaNegocio", "CapaNegocio\CapaNegocio.csproj", "{7AD79F45-2271-45E4-94D6-811EB9AED8EC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebSistemaCliente", "..\WebSistemaCliente\WebSistemaCliente.csproj", "{4CF235FD-1C6D-4D73-A4AF-33830C486885}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebSistemaCliente", "WebSistemaCliente\WebSistemaCliente.csproj", "{4CF235FD-1C6D-4D73-A4AF-33830C486885}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
