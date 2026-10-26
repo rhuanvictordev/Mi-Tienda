@@ -10,17 +10,26 @@ namespace WebSistema
         {
             bundles.Add(new Bundle("~/bundles/jquery").Include("~/Scripts/jquery-{version}.js"));
             bundles.Add(new Bundle("~/bundles/bootstrap").Include("~/Scripts/bootstrap.bundle.js"));
-            bundles.Add(new Bundle("~/bundles/complementos").Include("~/Scripts/scripts.js", "~/Scripts/fontawesome/all.min.js"));
+            bundles.Add(new Bundle("~/bundles/complementos").Include(
+                "~/Scripts/scripts.js",
+                "~/Scripts/fontawesome/all.min.js",
+                "~/Scripts/DataTables/jquery.dataTables.js",
+                "~/Scripts/DataTables/dataTables.responsive.js"
+            ));
 
-            /*bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
-                        "~/Scripts/jquery.validate*"));
 
+            bundles.Add(new StyleBundle("~/Content/css").Include(
+                "~/Content/site.css",
+                "~/Content/DataTables/css/jquery.dataTables.css",
+                "~/Content/DataTables/css/responsive.dataTables.css"
+            ));
+
+
+
+            /*bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include("~/Scripts/jquery.validate*"));
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at https://modernizr.com to pick only the tests you need.
-            bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
-                        "~/Scripts/modernizr-*"));*/
-
-            bundles.Add(new StyleBundle("~/Content/css").Include("~/Content/site.css"));
+            bundles.Add(new ScriptBundle("~/bundles/modernizr").Include("~/Scripts/modernizr-*"));*/
         }
     }
 }

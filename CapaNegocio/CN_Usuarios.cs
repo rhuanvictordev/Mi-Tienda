@@ -8,14 +8,13 @@ using CapaEntidad;
 
 namespace CapaNegocio
 {
-    public class CN_Usuarios
+    public static class CN_Usuarios
     {
-        private CD_Usuarios objCapaDato = new CD_Usuarios();
+        private static CD_Usuarios objCapaDato = new CD_Usuarios();
 
-        public List<Usuario> Listar() 
+        public static List<Usuario> Listar() 
         {
             return objCapaDato.Listar();
         }
-
     }
 }

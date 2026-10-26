@@ -43,7 +43,7 @@ namespace CapaDatos
                 }
             }
             catch
-            { 
+            {
                 lista = new List<Usuario>();
             }
 

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CapaEntidad;
+using CapaNegocio;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -16,6 +18,16 @@ namespace WebSistema.Controllers
         public ActionResult Usuarios()
         {
             return View();
+        }
+
+        [HttpGet]
+        public JsonResult ListarUsuarios()
+        { 
+            List<Usuario> oLista = new List<Usuario>();
+            oLista = CN_Usuarios.Listar();
+
+
+            return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
         }
     }
 }
