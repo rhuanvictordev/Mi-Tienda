@@ -16,7 +16,7 @@
     <div class="card-body">
         <div class="row">
             <div class="col-12">
-                <button class="btn btn-success" onclick="abrirModal()">Crear Nuevo</button>
+                <button class="btn btn-success" onclick="abrirModal(null)">Crear Nuevo</button>
             </div>
         </div>
 
@@ -40,7 +40,7 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="FormModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="FormModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header bg-dark text-white">
@@ -48,10 +48,13 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body g-2">
+
+                <input id="txtId" type="text" value="0" />
+
                 <div class="row">
                     <div class="col-sm-6">
                         <label for="txtnombres" class="form-label">Nombres</label>
-                        <input type="text" class="form-control" id="txtnombres">
+                        <input type="text" class="form-control" id="txtNombres">
                     </div>
                     <div class="col-sm-6">
                         <label for="txtApellidos" class="form-label">Apellidos</label>
@@ -62,8 +65,8 @@
                         <input type="text" class="form-control" id="txtCorreo">
                     </div>
                     <div class="col-sm-6">
-                        <label for="cboactivo" class="form-label">Activo</label>
-                        <select id="cboactivo" class="form-select">
+                        <label for="cboActivo" class="form-label">Activo</label>
+                        <select id="cboActivo" class="form-select">
                             <option value="1">Si</option>
                             <option value="0">No</option>
                         </select>
@@ -72,7 +75,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-primary">Guardar</button>
+                <button type="button" class="btn btn-primary" onclick="guardar()">Guardar</button>
             </div>
         </div>
     </div>
@@ -81,11 +84,11 @@
 
 @section scripts{
     <script>
-
         var tabladata;
+        var filaSelecionada;
 
-
-        @*$.ajax({
+        @* 
+        $.ajax({
             //url:"/Home/ListarUsuarios",
             url: '@Url.Action("ListarUsuarios","Home")',
             type: "GET",
@@ -94,7 +97,9 @@
             success: function (data) {
                 console.log(data);
             }
-        })*@
+        }); 
+        *@
+
 
         tabladata = $("#tabla").DataTable({
             responsive: true,
@@ -119,7 +124,7 @@
                 },
                 {
                     "defaultContent":
-                        '<button class="btn btn-primary btn-sm"><i class="fas fa-pen"></i></button>' +
+                        '<button class="btn btn-primary btn-sm btn-editar"><i class="fas fa-pen"></i></button>' +
                         '<button class="btn btn-danger btn-sm ms-2"><i class="fas fa-trash"></i></button>',
                     "orderable": false,
                     "searchable": false,
@@ -131,10 +136,74 @@
 
 
 
-        function abrirModal() {
+        function abrirModal(json) {
+
+            $("#txtId").val(0);
+            $("#txtNombres").val("");
+            $("#txtApellidos").val("");
+            $("#txtCorreo").val("");
+            $("#cboActivo").val(1);
+
+            if (json != null) {
+                $("#txtId").val(json.IdUsuario);
+                $("#txtNombres").val(json.Nombres);
+                $("#txtApellidos").val(json.Apellidos);
+                $("#txtCorreo").val(json.Correo);
+                $("#cboActivo").val(json.Activo == true ? 1 : 0);
+            }
+
             $("#FormModal").modal("show");
         }
 
+
+        $("#tabla tbody").on("click", '.btn-editar', function () {
+            filaSelecionada = $(this).closest("tr");
+            var data = tabladata.row(filaSelecionada).data();
+            abrirModal(data);
+        })
+
+
+        function guardar() {
+
+            var Usuario = {
+                IdUsuario: $("#txtId").val(),
+                Nombres: $("#txtNombres").val(),
+                Apellidos: $("#txtApellidos").val(),
+                Correo: $("#txtCorreo").val(),
+                Activo: $("#cboActivo").val() == 1 ? true : false,
+            }
+
+            $.ajax({
+                url: '@Url.Action("GuardarUsuario", "Home")',
+                type: "POST",
+                data: JSON.stringify({ objeto : Usuario }),
+                datatype: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    debugger;
+                    // usuario nuevo
+                    if (Usuario.IdUsuario == 0) {
+                        if (data.IdUsuario != 0) {
+                            Usuario.IdUsuario = data.resultado;
+                            tabladata.row.add(Usuario).draw(false);
+                            $("#FormModal").modal("hide");
+                        }
+                        
+                    } else {
+                        alert(data.mensaje);
+                    }
+
+                },
+                error: function (error) {
+                    console.log(error);
+                },
+                beforeSend: function () {
+
+                }
+            })
+
+            $("#FormModal").modal("hide");
+        }
 
 
     </script>
