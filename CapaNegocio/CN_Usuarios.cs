@@ -12,7 +12,7 @@ namespace CapaNegocio
     {
         private CD_Usuarios objCapaDato = new CD_Usuarios();
 
-        public List<Usuario> Listar() 
+        public List<Usuario> Listar()
         {
             return objCapaDato.Listar();
         }
@@ -34,11 +34,14 @@ namespace CapaNegocio
             {
                 string clave = "test123";
                 obj.Clave = CN_Recursos.ConvertirSha256(clave);
-                
+
                 return objCapaDato.Registrar(obj, out Mensaje);
             }
+            else
+            {
+                return 0;
+            }
 
-            return 0;
         }
 
 
@@ -57,9 +60,12 @@ namespace CapaNegocio
 
             if (string.IsNullOrEmpty(Mensaje))
             {
+                string clave = "test123";
+                obj.Clave = CN_Recursos.ConvertirSha256(clave);
+
                 return objCapaDato.Editar(obj, out Mensaje);
             }
-            else 
+            else
             {
                 return false;
             }

@@ -71,6 +71,9 @@
                             <option value="0">No</option>
                         </select>
                     </div>
+                    <div>
+                        <div id="mensajeError" class="alert alert-danger mt-2" role="alert">A simple danger alert—check it out!</div>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
@@ -125,7 +128,7 @@
                 {
                     "defaultContent":
                         '<button class="btn btn-primary btn-sm btn-editar"><i class="fas fa-pen"></i></button>' +
-                        '<button class="btn btn-danger btn-sm ms-2"><i class="fas fa-trash"></i></button>',
+                        '<button class="btn btn-danger btn-sm ms-2 btn-eliminar"><i class="fas fa-trash"></i></button>',
                     "orderable": false,
                     "searchable": false,
                     "width": "90px"
@@ -143,6 +146,7 @@
             $("#txtApellidos").val("");
             $("#txtCorreo").val("");
             $("#cboActivo").val(1);
+            $("#mensajeError").hide();
 
             if (json != null) {
                 $("#txtId").val(json.IdUsuario);
@@ -151,10 +155,8 @@
                 $("#txtCorreo").val(json.Correo);
                 $("#cboActivo").val(json.Activo == true ? 1 : 0);
             }
-
             $("#FormModal").modal("show");
         }
-
 
         $("#tabla tbody").on("click", '.btn-editar', function () {
             filaSelecionada = $(this).closest("tr");
@@ -162,9 +164,47 @@
             abrirModal(data);
         })
 
+        $("#tabla tbody").on("click", '.btn-eliminar', function () {
+            var usuarioSelecionado = $(this).closest("tr");
+            var data = tabladata.row(usuarioSelecionado).data();
+            swal({
+                title: "Esta seguro?",
+                text: "Desea eliminar el usuario?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonClass: "btn-primary",
+                confirmButtonText: "Si",
+                cancelButtonText: "No",
+                closeOnConfirm: true
+            },
+            function(){
+                $.ajax({
+                    url: '@Url.Action("EliminarUsuario","Home")',
+                    type: "POST",
+                    data: JSON.stringify({ id : data.IdUsuario }),
+                    datatype: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        console.log(data);
+                        if (data.resultado){
+                            tabladata.row(usuarioSelecionado).remove().draw();
+                        }else{
+                            swal("No se pudo eliminar", data.mensaje, "error");
+                        }
+                    },
+                    error: function (error){
+                        console.log(error);
+                    },
+                    beforeSend: function(){
+                        
+                    },
+                });
+            });
+        })
+
 
         function guardar() {
-
+            
             var Usuario = {
                 IdUsuario: $("#txtId").val(),
                 Nombres: $("#txtNombres").val(),
@@ -181,30 +221,43 @@
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
                     debugger;
-                    // usuario nuevo
-                    if (Usuario.IdUsuario == 0) {
-                        if (data.IdUsuario != 0) {
+                    $(".modal-body").LoadingOverlay("hide");
+                    // USUARIO NUEVO
+                    if (Usuario.IdUsuario == 0){
+                        if (data.resultado != 0){
                             Usuario.IdUsuario = data.resultado;
                             tabladata.row.add(Usuario).draw(false);
                             $("#FormModal").modal("hide");
+                        }else{
+                            $("#mensajeError").text(data.mensaje);
+                            $("#mensajeError").show();
                         }
-                        
-                    } else {
-                        alert(data.mensaje);
+                    // USUARIO EDITAR
+                    }else{
+                        if (data.resultado){
+                            tabladata.row(filaSelecionada).data(Usuario).draw(false);
+                            filaSelecionada = null;
+                            $("#FormModal").modal("hide");
+                        }else{
+                            $("#mensajeError").text(data.mensaje);
+                            $("#mensajeError").show();
+                        }
                     }
-
                 },
                 error: function (error) {
-                    console.log(error);
+                    $(".modal-body").LoadingOverlay("hide");
+                    $("#mensajeError").text("Error Ajax");
+                    $("#mensajeError").show();
                 },
                 beforeSend: function () {
-
+                    $(".modal-body").LoadingOverlay("show", {
+                        imageResizeFactor: 2,
+                        text: "Cargando...",
+                        size: 14
+                    })
                 }
             })
-
-            $("#FormModal").modal("hide");
         }
-
 
     </script>
 }

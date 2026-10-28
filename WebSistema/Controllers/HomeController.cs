@@ -20,6 +20,7 @@ namespace WebSistema.Controllers
             return View();
         }
 
+
         [HttpGet]
         public JsonResult ListarUsuarios()
         { 
@@ -27,6 +28,7 @@ namespace WebSistema.Controllers
             oLista = new CN_Usuarios().Listar();
             return Json(new { data = oLista }, JsonRequestBehavior.AllowGet);
         }
+
 
         [HttpPost]
         public JsonResult GuardarUsuario(Usuario objeto)
@@ -41,8 +43,17 @@ namespace WebSistema.Controllers
             {
                 resultado = new CN_Usuarios().Editar(objeto, out mensaje);
             }
-
             return Json(new { resultado = resultado, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
+        }
+
+
+        [HttpPost]
+        public JsonResult EliminarUsuario(int id)
+        {
+            bool respuesta = false;
+            string mensaje = string.Empty;
+            respuesta = new CN_Usuarios().Eliminar(id, out mensaje);
+            return Json(new { resultado = respuesta, mensaje = mensaje }, JsonRequestBehavior.AllowGet);
         }
     }
 }
